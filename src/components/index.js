@@ -1,5 +1,5 @@
 import CustomButton from "./CustomButton";
-import AIpicker from "./AIpicker";
+import AIpicker from "./AIPicker";
 import ColorPicker from "./ColorPicker";
 import Tab from "./Tab";
 import FilePicker from "./FilePicker";

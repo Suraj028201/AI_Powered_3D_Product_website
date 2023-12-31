@@ -7,17 +7,15 @@ const ColorPicker = () => {
 
   const snap = useSnapshot(state);
 
-
-  
   return (
     <div className='absolute left-full ml-3'>
       <SketchPicker 
-        coLor={snap.color} 
+        color={snap.color} 
         disableAlpha
         presetColors={[
           '#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff'
         ]}
-        onChange={(coLor) => {state.color = coLor.hex}}
+        onChange={(color) => {state.color = color.hex}}
       />
     </div>
   )

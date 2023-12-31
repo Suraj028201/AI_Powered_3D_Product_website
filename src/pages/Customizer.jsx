@@ -8,6 +8,7 @@ import { downloadCanvasToImage, reader } from '../config/helpers';
 import { EditorTabs, FilterTabs, DecalTypes } from '../config/constants';
 import { fadeAnimation, slideAnimation } from '../config/motion';
 import { AIpicker, ColorPicker, CustomButton, Tab, FilePicker } from '../components';
+import OpenAI from 'openai';
 
 const Customizer = () => {
 
@@ -50,9 +51,28 @@ const Customizer = () => {
       return alert("Please Eneter A Prompt");
     }
     try{
+      setGeneratingImg(true);
+      const openai = new OpenAI({
+        apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+        dangerouslyAllowBrowser: true
+      })
 
+      // const openai = new OpenAI.OpenAIApi(configuration);
+
+      const response = await openai.images.generate({
+        prompt: prompt,
+        n:1,
+        size: '1024x1024',
+        response_format: 'b64_json'
+      })
+
+      console.log(response.data[0])
+
+      const image = response.data[0].b64_json;
+      handleDecal(type, `data:image/png;base64,${image}`);
     } catch(error) {
       alert(error);
+      console.log(error, 'openai api')
     } finally {
       setGeneratingImg(false);
       setActiveEditorTab('');
@@ -78,8 +98,8 @@ const Customizer = () => {
 
   const handleActiveFilterTab = (tabName) => {
     switch(tabName){
-      case 'logoshirt':
-        state.isLogoTexture = !activeEditorTab[tabName]
+      case 'logoShirt':
+        state.isLogoTexture = !activeFilterTab[tabName]
         break;
       case 'stylishShirt':
         state.isFullTexture = !activeFilterTab[tabName]
